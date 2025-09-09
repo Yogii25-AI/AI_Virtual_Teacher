@@ -1,13 +1,11 @@
-# --- Imports ---
 import streamlit as st
-import openai
+from openai import OpenAI   # ✅ use the new client library
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 
 # --- Load secret key (AFTER imports, BEFORE using it) ---
-openai_key = st.secrets["OPENAI_API_KEY"]
-openai.api_key = openai_key   # if you use OpenAI
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # --- Your Streamlit app code starts here ---
 st.title("AI Virtual Teacher")
@@ -17,12 +15,16 @@ st.write("Welcome! Ask me anything about AI.")
 user_input = st.text_input("Your Question:")
 
 if user_input:
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=user_input,
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",   # ✅ modern replacement for text-davinci-003
+        messages=[
+            {"role": "system", "content": "You are a helpful AI teacher."},
+            {"role": "user", "content": user_input},
+        ],
         max_tokens=100
     )
-    st.write(response["choices"][0]["text"])
+    st.write(response.choices[0].message.content)
+
 
 import streamlit as st
 import pandas as pd
