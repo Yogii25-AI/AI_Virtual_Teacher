@@ -1,13 +1,10 @@
 import streamlit as st
-from openai import OpenAI   # ✅ use the new client library
-import numpy as np
-import tensorflow as tf
-from PIL import Image
+from openai import OpenAI
 
-# --- Load secret key (AFTER imports, BEFORE using it) ---
+# --- Load secret key ---
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# --- Your Streamlit app code starts here ---
+# --- Your Streamlit app code ---
 st.title("AI Virtual Teacher")
 
 st.write("Welcome! Ask me anything about AI.")
@@ -16,7 +13,7 @@ user_input = st.text_input("Your Question:")
 
 if user_input:
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",   # ✅ modern replacement for text-davinci-003
+        model="gpt-3.5-turbo",   # modern replacement for text-davinci-003
         messages=[
             {"role": "system", "content": "You are a helpful AI teacher."},
             {"role": "user", "content": user_input},
@@ -24,7 +21,6 @@ if user_input:
         max_tokens=100
     )
     st.write(response.choices[0].message.content)
-
 
 import streamlit as st
 import pandas as pd
