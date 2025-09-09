@@ -1,19 +1,17 @@
 import streamlit as st
 from openai import OpenAI
 
-# --- Load secret key ---
+# ✅ Load API key from Streamlit secrets
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# --- Your Streamlit app code ---
 st.title("AI Virtual Teacher")
-
 st.write("Welcome! Ask me anything about AI.")
 
 user_input = st.text_input("Your Question:")
 
 if user_input:
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",   # modern replacement for text-davinci-003
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a helpful AI teacher."},
             {"role": "user", "content": user_input},
